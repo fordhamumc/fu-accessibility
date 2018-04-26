@@ -1,19 +1,12 @@
 <?php
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @since             0.0.1
  * @package           FU_Accessibility
+ * @since             0.0.1
  *
  * @wordpress-plugin
  * Plugin Name:       Fordham Accessibility Helper
  * Plugin URI:        http://news.fordham.edu
- * Description:       This plugin adds accessibility helpers to Wordpress.
+ * Description:       Adds accessibility helpers to Wordpress.
  * Version:           0.0.1
  * Author:            Michael Foley
  * Author URI:        https://michaeldfoley.com
@@ -104,13 +97,6 @@ class FU_Accessibility {
 
 /**
  * Begins execution of the plugin
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * Also returns copy of the app object so 3rd party developers
- * can interact with the plugin's hooks contained within.
  **/
 function fu_accessibility_init() {
   return FU_Accessibility::init();

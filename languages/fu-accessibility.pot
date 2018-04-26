@@ -1,0 +1,46 @@
+# Copyright (C) 2018 Michael Foley
+# This file is distributed under the MIT.
+msgid ""
+msgstr ""
+"Project-Id-Version: Fordham Accessibility Helper 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/fu-accessibility\n"
+"POT-Creation-Date: 2018-04-26 18:43:47+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: node-wp-i18n 1.1.1\n"
+
+#: inc/admin/class-admin.php:68
+msgid "Authors"
+msgstr ""
+
+#: inc/admin/class-admin.php:69
+msgid "All authors"
+msgstr ""
+
+#: inc/admin/class-admin.php:70
+msgid "No alt tag"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Fordham Accessibility Helper"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://news.fordham.edu"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Adds accessibility helpers to Wordpress."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Michael Foley"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://michaeldfoley.com"
+msgstr ""

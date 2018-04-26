@@ -65,9 +65,9 @@ class Admin {
 		$this->plugin_text_domain = $plugin_text_domain;
 
     $this->set_labels(array(
-      'authors'     => 'Authors',
-      'authorsAll'  => 'All authors',
-      'alt'         => 'No alt tag'
+      'authors'     => __('Authors', $this->plugin_text_domain),
+      'authorsAll'  => __('All authors', $this->plugin_text_domain),
+      'alt'         => __('No alt tag', $this->plugin_text_domain)
     ) );
 
     add_action('restrict_manage_posts', array($this, 'add_author_filter') );
@@ -92,7 +92,7 @@ class Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/fu-accessibility-media-filter.js', array( 'media-editor', 'media-views' ), $this->version, false );
-    wp_localize_script( $this->plugin_name, 'MediaLibraryAuthorFilterData', array( 'authors' => $this->get_media_authors() ) );
+    wp_localize_script( $this->plugin_name, 'MediaLibraryAuthorFilterData', array( 'authors' => $this->get_authors() ) );
     wp_localize_script( $this->plugin_name, 'MediaLibraryAdditionalFilterLabels', $this->get_labels() );
 
 	}
@@ -105,7 +105,7 @@ class Admin {
 	private function set_labels($labels) {
     if (!is_array($labels)) return;
     foreach ($labels as $key => $value) {
-      $this->labels[$key] = __($value, $this->plugin_text_domain);
+      $this->labels[$key] = $value;
     }
   }
 
@@ -116,7 +116,7 @@ class Admin {
    * @return      array
    */
 	private function get_labels() {
-	  return $this->labels;
+	  return apply_filters('fu_accessibility_get_labels', $this->labels);
   }
 
   /**
@@ -128,7 +128,7 @@ class Admin {
    * @param       bool  $passthrough          Whether to return the args to pass to another method or the users array
    * @return      array
    */
-  private function get_media_authors($args = array(), $passthrough = false) {
+  private function get_authors($args = array(), $passthrough = false) {
     $args = array_merge(array(
       'who'     => 'authors',
       'orderby' => 'display_name'
@@ -140,7 +140,7 @@ class Admin {
       }
       return get_users( $args );
     }
-    return $args;
+    return apply_filters('fu_accessibility_get_authors', $args);
   }
 
   /**
@@ -163,7 +163,7 @@ class Admin {
     if ( isset( $_GET[ 'user' ] ) ) {
       $args[ 'selected' ] = $_GET[ 'user' ];
     }
-    $args = $this->get_media_authors($args, true);
+    $args = $this->get_authors($args, true);
 
     echo "<label for=\"author-filter\" class=\"screen-reader-text\">{$labels['authors']}</label>";
     wp_dropdown_users( $args );
@@ -197,7 +197,7 @@ class Admin {
    * @return      array
    */
   private function get_meta_query() {
-    return apply_filters('fu_meta_query', array(
+    return apply_filters('fu_accessibility_meta_query', array(
       'relation' => 'OR',
       array(
         'key' => '_wp_attachment_image_alt',

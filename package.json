@@ -1,0 +1,24 @@
+{
+  "name": "fu_accessibility",
+  "description": "Adds accessibility helpers to Wordpress.",
+  "version": "2.0.4",
+  "keywords": [ "wordpress","a11y","accessibility"],
+  "author": {
+    "name": "Michael Foley",
+    "web": "https://michaeldfoley.com"
+  },
+  "bugs": {
+    "web": "https://github.com/fordhamumc/fu-events-calendar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fordhamumc/fu-events-calendar.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "node-wp-i18n": "^1.1.1"
+  },
+  "scripts": {
+    "localize": "wpi18n makepot --domain-path /languages --main-file fu-accessibility.php --type wp-plugin --include inc/.*"
+  }
+}
