@@ -3,3 +3,8 @@
  *
  * The file is enqueued from inc/admin/class-admin.php.
  */
+
+.attachment-filters-label {
+    display: inline-block;
+    margin: 0 10px 0 0;
+}

@@ -57,13 +57,12 @@ class Init {
 
 		$this->plugin_name = NS\PLUGIN_NAME;
 		$this->version = NS\PLUGIN_VERSION;
-				$this->plugin_basename = NS\PLUGIN_BASENAME;
-				$this->plugin_text_domain = NS\PLUGIN_TEXT_DOMAIN;
+    $this->plugin_basename = NS\PLUGIN_BASENAME;
+    $this->plugin_text_domain = NS\PLUGIN_TEXT_DOMAIN;
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
 	}
 
 	/**
@@ -109,34 +108,8 @@ class Init {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
-		/*
-		 * Additional Hooks go here
-		 *
-		 * e.g.
-		 *
-		 * //admin menu pages
-		 * $this->loader->add_action('admin_menu', $plugin_admin, 'add_plugin_admin_menu');
-		 *
-		 *  //plugin action links
-		 * $this->loader->add_filter( 'plugin_action_links_' . $this->plugin_basename, $plugin_admin, 'add_additional_action_link' );
-		 *
-		 */
-	}
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @access    private
-	 */
-	private function define_public_hooks() {
-
-		$plugin_public = new Frontend\Frontend( $this->get_plugin_name(), $this->get_version(), $this->get_plugin_text_domain() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+    $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'update_attachments' );
+    $this->loader->add_filter( 'ajax_query_attachments_args', $plugin_admin, 'update_ajax_attachments' );
 	}
 
 	/**
