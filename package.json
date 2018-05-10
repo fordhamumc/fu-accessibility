@@ -2,7 +2,11 @@
   "name": "fu_accessibility",
   "description": "Adds accessibility helpers to Wordpress.",
   "version": "2.0.4",
-  "keywords": [ "wordpress","a11y","accessibility"],
+  "keywords": [
+    "wordpress",
+    "a11y",
+    "accessibility"
+  ],
   "author": {
     "name": "Michael Foley",
     "web": "https://michaeldfoley.com"
@@ -16,9 +20,18 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "node-wp-i18n": "^1.1.1"
+    "node-wp-i18n": "^1.1.1",
+    "npm-watch": "^0.3.0",
+    "uglify-js": "^3.3.22"
+  },
+  "watch": {
+    "minify": "inc/admin/js/src/*.js"
   },
   "scripts": {
-    "localize": "wpi18n makepot --domain-path /languages --main-file fu-accessibility.php --type wp-plugin --include inc/.*"
+    "minify": "uglifyjs inc/admin/js/src/*.js --output inc/admin/js/fu-accessibility-admin.min.js --compress --mangle --source-map",
+    "localize": "wpi18n makepot --domain-path /languages --main-file fu-accessibility.php --type wp-plugin --include inc/.*",
+    "watch": "npm-watch",
+    "build": "npm run minify && npm run localize",
+    "dev": "npm run watch"
   }
 }

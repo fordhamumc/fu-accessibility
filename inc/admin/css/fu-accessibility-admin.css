@@ -1,10 +1,49 @@
-/**
- * All of the CSS for your admin-specific functionality should be included in this file.
- *
- * The file is enqueued from inc/admin/class-admin.php.
- */
-
 .attachment-filters-label {
     display: inline-block;
     margin: 0 10px 0 0;
+}
+
+.media-modal-content .media-frame .attachment-filters,
+.media-modal-content .media-frame .attachment-filters-label {
+    margin-top: 11px;
+}
+
+@media screen and (max-width: 1454px) {
+    .attachments-browser .media-toolbar {
+        height: 90px;
+    }
+    .attachments-browser .attachments, .attachments-browser .uploader-inline {
+        top: 90px;
+    }
+}
+
+@media screen and (min-width: 1455px) {
+    .media-modal-content .media-frame select.attachment-filters {
+        width: 23%;
+        width: calc(29% - 12px);
+    }
+}
+
+/**
+ * Require Image Alt Tags
+ * Adapted from: UF Health Require Image Alt Tags (https://github.com/UFHealth/ufhealth-require-image-alt-tags)
+ */
+.media-frame-toolbar .media-toolbar-primary {
+    position: relative;
+}
+.media-frame-toolbar .media-toolbar-primary:after {
+    display: block;
+    background: transparent;
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.media-frame-toolbar .media-toolbar-primary.fu-has-alt-text:after {
+    display: none;
+}
+.fu-needs-alt-text {
+    border: 1px solid red;
 }

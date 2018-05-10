@@ -91,16 +91,33 @@ class Admin {
 	 * @since       0.0.1
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/fu-accessibility-media-filter.js', array( 'media-editor', 'media-views' ), $this->version, false );
-    wp_localize_script( $this->plugin_name, 'MediaLibraryAuthorFilterData', array( 'authors' => $this->get_authors() ) );
+    wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/fu-accessibility-admin.min.js', array( 'media-editor', 'media-views', 'jquery' ), $this->version, false );
+		wp_localize_script( $this->plugin_name, 'MediaLibraryAuthorFilterData', array( 'authors' => $this->get_authors() ) );
     wp_localize_script( $this->plugin_name, 'MediaLibraryAdditionalFilterLabels', $this->get_labels() );
 
+    /**
+     * Filter the disclaimer copy shown when attempting to insert an image without ALT text.
+     *
+     * @since 1.1.3
+     *
+     * @param string $disclaimer_copy The copy shown in the warning box.
+     */
+    wp_localize_script(
+      $this->plugin_name,
+      'AltTagsCopy',
+      array(
+        'txt'        => apply_filters( 'fu_alt_tag_txt', esc_html__( 'The following image(s) are missing alt text', $this->plugin_text_domain ) ),
+        'editTxt'    => apply_filters( 'fu_alt_tag_edittxt', esc_html__( 'You must enter alt text for the image', $this->plugin_text_domain ) ),
+        'disclaimer' => apply_filters( 'fu_alt_tag_disclaimer', esc_html__( 'Please include an ‘Alt Text’ before proceeding with inserting your image.', $this->plugin_text_domain ) ),
+      )
+    );
 	}
 
   /**
    * Add labels for localization
    *
    * @since       0.0.1
+   * @param       array $labels              Associative array of labels for localization
    */
 	private function set_labels($labels) {
     if (!is_array($labels)) return;

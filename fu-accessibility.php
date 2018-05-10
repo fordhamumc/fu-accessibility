@@ -7,7 +7,7 @@
  * Plugin Name:       Fordham Accessibility Helper
  * Plugin URI:        http://news.fordham.edu
  * Description:       Adds accessibility helpers to Wordpress.
- * Version:           0.0.1
+ * Version:           0.0.2
  * Author:            Michael Foley
  * Author URI:        https://michaeldfoley.com
  * License:           MIT

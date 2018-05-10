@@ -43,7 +43,7 @@
                 filters[ index ] = {
                     text: value.display_name,
                     props: {
-                        author: value.ID,
+                        author: value.ID
                     }
                 };
             });
