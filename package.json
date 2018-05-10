@@ -18,7 +18,7 @@
     "type": "git",
     "url": "git@github.com:fordhamumc/fu-events-calendar.git"
   },
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {
     "node-wp-i18n": "^1.1.1",
     "npm-watch": "^0.3.0",

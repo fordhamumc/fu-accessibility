@@ -10,8 +10,8 @@
  * Version:           0.0.2
  * Author:            Michael Foley
  * Author URI:        https://michaeldfoley.com
- * License:           MIT
- * License URI:       https://opensource.org/licenses/MIT
+ * License:           GPLv3
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:       fu-accessibility
  * Domain Path:       /languages
  */
