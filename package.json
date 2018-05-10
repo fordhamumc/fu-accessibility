@@ -1,7 +1,7 @@
 {
   "name": "fu_accessibility",
   "description": "Adds accessibility helpers to Wordpress.",
-  "version": "2.0.4",
+  "version": "0.0.2",
   "keywords": [
     "wordpress",
     "a11y",
@@ -12,11 +12,11 @@
     "web": "https://michaeldfoley.com"
   },
   "bugs": {
-    "web": "https://github.com/fordhamumc/fu-events-calendar/issues"
+    "web": "https://github.com/fordhamumc/fu-accessibility/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:fordhamumc/fu-events-calendar.git"
+    "url": "git@github.com:fordhamumc/fu-accessibility.git"
   },
   "license": "GPL-3.0-or-later",
   "devDependencies": {

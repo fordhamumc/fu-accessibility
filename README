@@ -1,0 +1,30 @@
+=== FU Accessibility ===
+Contributors: michaeldfoley
+Tags: accessibility, a11y, alt, image
+Requires at least: 3.0.1
+Tested up to: 4.9.5
+Stable tag: 0.0.2
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.txt
+
+Adds accessibility helpers to Wordpress.
+
+== Description ==
+
+This plugin currently does two things.
+
+1. Allows you to filter the Media Library to show images that do not have alt tags set. This works in both grid and list view.
+1. Prevents users from inserting images into posts that do not have alt tags.
+
+== Installation ==
+
+1. Upload `wp-plugin-name.php` to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
+
+== Changelog ==
+
+= 0.0.2 =
+* Add the ability to prevent users from inserting images without alt tags.
+
+= 0.0.1 =
+* Adds a filter checkbox to the Media Library that, when clicked, will show images that lack an alt tag
