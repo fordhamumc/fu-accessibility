@@ -1,6 +1,6 @@
 <?php
 
-namespace FU_Accessibility\Inc\Core;
+namespace FU_Accessibility\core;
 
 /**
  * Define the internationalization functionality.

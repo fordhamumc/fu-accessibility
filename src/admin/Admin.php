@@ -1,6 +1,6 @@
 <?php
 
-namespace FU_Accessibility\Inc\Admin;
+namespace FU_Accessibility\admin;
 
 /**
  * The admin-specific functionality of the plugin.

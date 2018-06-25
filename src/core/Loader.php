@@ -1,6 +1,6 @@
 <?php
 
-namespace FU_Accessibility\Inc\Core;
+namespace FU_Accessibility\core;
 
 /**
  * Register all actions and filters for the plugin

@@ -1,9 +1,8 @@
 <?php
 
-namespace FU_Accessibility\Inc\Core;
+namespace FU_Accessibility\core;
 use FU_Accessibility as NS;
-use FU_Accessibility\Inc\Admin as Admin;
-use FU_Accessibility\Inc\Frontend as Frontend;
+use FU_Accessibility\admin as Admin;
 
 /**
  * The core plugin class.
