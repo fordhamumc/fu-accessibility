@@ -69,9 +69,6 @@ class Admin {
       'authorsAll'  => __('All authors', $this->plugin_text_domain),
       'alt'         => __('No alt tag', $this->plugin_text_domain)
     ) );
-
-    add_action('restrict_manage_posts', array($this, 'add_author_filter') );
-    add_action('restrict_manage_posts', array($this, 'add_alt_media_filter') );
 	}
 
 	/**

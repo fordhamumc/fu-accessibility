@@ -109,6 +109,8 @@ class Init {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
     $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'update_attachments' );
     $this->loader->add_filter( 'ajax_query_attachments_args', $plugin_admin, 'update_ajax_attachments' );
+    $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'add_author_filter' );
+    $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'add_alt_media_filter' );
 	}
 
 	/**
