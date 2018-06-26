@@ -104,6 +104,7 @@ class Init {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Admin\Admin( $this->get_plugin_name(), $this->get_version(), $this->get_plugin_text_domain() );
+    $settings = new Admin\Settings( $this->get_plugin_text_domain() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -111,6 +112,10 @@ class Init {
     $this->loader->add_filter( 'ajax_query_attachments_args', $plugin_admin, 'update_ajax_attachments' );
     $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'add_author_filter' );
     $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'add_alt_media_filter' );
+
+    $this->loader->add_action( 'admin_menu', $settings, 'add_admin_menu' );
+    $this->loader->add_action( 'admin_init', $settings, 'add_sections' );
+    $this->loader->add_action( 'admin_init', $settings, 'add_fields' );
 	}
 
 	/**
