@@ -41,7 +41,7 @@ class Queue {
       'post_type'      => 'attachment',
       'post_mime_type' => 'image',
       'post_status'    => 'inherit',
-      'posts_per_page' => 20,
+      'posts_per_page' => 1,
       'orderby'        => 'modified',
       'fields'         => 'ids',
       'meta_query'     => array(
@@ -135,7 +135,18 @@ class Queue {
     $image_meta = self::get_image_meta( $post_id );
 
     $image_meta['fu_locked'] = true;
+    wp_update_attachment_metadata( $post_id, $image_meta );
+  }
 
+  /**
+   * Unlock an attachment.
+   *
+   * @param int $post_id
+   */
+  public static function unlock_attachment( $post_id ) {
+    $image_meta = self::get_image_meta( $post_id );
+
+    unset( $image_meta['fu_locked'] );
     wp_update_attachment_metadata( $post_id, $image_meta );
   }
 }

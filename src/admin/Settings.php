@@ -51,9 +51,17 @@ class Settings {
    * @since   0.1.0
    */
   public function add_admin_menu() {
-    add_options_page(
-      __( 'Accessibility Helper', $this->plugin_text_domain ),
-      __( 'Accessibility Helper', $this->plugin_text_domain ),
+    add_menu_page(
+      __( 'Accessibility', $this->plugin_text_domain ),
+      __( 'Accessibility', $this->plugin_text_domain ),
+      'manage_options',
+      'fu_accessibility_settings',
+      'theme_settings_page');
+
+    add_submenu_page(
+      'fu_accessibility_settings',
+      __( 'Alt Tag Generator', $this->plugin_text_domain ),
+      __( 'Alt Tags', $this->plugin_text_domain ),
       'manage_options',
       'fu_accessibility_settings',
       array($this, 'add_options_wrapper')
@@ -65,10 +73,10 @@ class Settings {
    *
    * @since   0.1.0
    */
-  public function add_options_wrapper() { ?>
+  public function add_options_wrapper($f) { ?>
     <div class="wrap">
-      <h2>Accessibility Helper</h2>
-      <form action='options.php' method='post'>
+      <h2><?php _e( 'Accessibility', $this->plugin_text_domain ); ?></h2>
+      <form action="options.php" method="post">
         <?php
         settings_fields( 'fu_accessibility_settings' );
         do_settings_sections( 'fu_accessibility_settings' );
@@ -146,6 +154,11 @@ class Settings {
    * @param   array    $args   The parameters of the add_fields method
    */
   public function field_callback( $args ) {
+    $args = array_merge( array(
+      'default' => '',
+      'placeholder' => '',
+      'type' => 'text'
+    ), $args);
     $value = get_option( $args['uid'] );
     if( ! $value ) {
       $value = $args['default'];
@@ -186,11 +199,11 @@ class Settings {
         }
         break;
     }
-    if( $helper = $args['helper'] ){
-      printf( '<span class="helper"> %s</span>', $helper );
+    if( isset( $args['helper'] ) ){
+      printf( '<span class="helper"> %s</span>', $args['helper'] );
     }
-    if( $supplemental = $args['supplemental'] ){
-      printf( '<p class="description">%s</p>', $supplemental );
+    if( isset( $args['supplemental'] ) ){
+      printf( '<p class="description">%s</p>', $args['supplemental'] );
     }
   }
 

@@ -232,7 +232,7 @@ class Admin {
    * @since       0.0.1
    */
   public function update_attachments ($query) {
-    if ($_GET['no_alt']) {
+    if (isset($_GET['no_alt']) && $_GET['no_alt']) {
       $query->set('meta_query', $this->get_meta_query());
     }
   }
