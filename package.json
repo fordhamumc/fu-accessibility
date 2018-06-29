@@ -1,7 +1,7 @@
 {
   "name": "fu_accessibility",
   "description": "Adds accessibility helpers to Wordpress.",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "keywords": [
     "wordpress",
     "a11y",
