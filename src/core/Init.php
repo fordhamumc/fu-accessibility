@@ -116,6 +116,8 @@ class Init {
     $this->loader->add_action( 'admin_menu', $settings, 'add_admin_menu' );
     $this->loader->add_action( 'admin_init', $settings, 'add_sections' );
     $this->loader->add_action( 'admin_init', $settings, 'add_fields' );
+    $this->loader->add_action( 'admin_post_fu_accessibility_update', $settings, 'form_response');
+    $this->loader->add_filter( 'removable_query_args', $settings, 'update_removable_query_args');
 	}
 
 	/**

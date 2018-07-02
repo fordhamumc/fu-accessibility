@@ -41,7 +41,7 @@ class Queue {
       'post_type'      => 'attachment',
       'post_mime_type' => 'image',
       'post_status'    => 'inherit',
-      'posts_per_page' => 1,
+      'posts_per_page' => get_option( 'fu_azure_limit', 5000 ),
       'orderby'        => 'modified',
       'fields'         => 'ids',
       'meta_query'     => array(
@@ -65,19 +65,15 @@ class Queue {
 
   /**
    * Process a batch of images
+   *
+   * @return int    Number of images queued
    */
   public function queue_images() {
     $image_ids = self::get_images();
     foreach ($image_ids as $post_id) {
       self::queue_image($post_id);
     }
-  }
-
-  public function get_all_image_meta() {
-    $image_ids = self::get_images();
-    foreach ($image_ids as $post_id) {
-      print_r(self::get_image_meta($post_id));
-    }
+    return count($image_ids);
   }
 
 
