@@ -2,6 +2,8 @@
 
 namespace FU_Accessibility\admin;
 
+use FU_Accessibility as NS;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -13,66 +15,85 @@ namespace FU_Accessibility\admin;
  * @author    Michael Foley
  */
 class Admin {
+  /**
+   * Singleton
+   *
+   * @since   0.1.0
+   * @access  protected
+   * @var     Admin|null
+   */
+  protected static $instance = null;
 
 	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    0.0.1
-	 * @access   private
+	 * @access   protected
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	protected $plugin_name;
 
 	/**
 	 * The version of this plugin.
 	 *
 	 * @since    0.0.1
-	 * @access   private
+	 * @access   protected
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+	protected $version;
 
 	/**
 	 * The text domain of this plugin.
 	 *
 	 * @since    0.0.1
-	 * @access   private
-	 * @var      string    $plugin_text_domain    The text domain of this plugin.
+	 * @access   protected
+	 * @var      string    $text_domain    The text domain of this plugin.
 	 */
-	private $plugin_text_domain;
+	protected $text_domain;
 
   /**
    * Localized filter labels
    *
    * @since    0.0.1
-   * @access   private
+   * @access   protected
    * @var      array
    */
-  private $labels;
+  protected $labels;
+
+
+  /**
+   * Singleton
+   *
+   * @since   0.1.0
+   * @return  Admin|null
+   */
+  public static function instance() {
+    if ( is_null( self::$instance ) ) {
+      self::$instance = new self();
+    }
+    return self::$instance;
+  }
 
   /**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since       0.0.1
-	 * @param       string $plugin_name        The name of this plugin.
-	 * @param       string $version            The version of this plugin.
-	 * @param       string $plugin_text_domain The text domain of this plugin.
 	 */
-	public function __construct( $plugin_name, $version, $plugin_text_domain ) {
+	public function __construct() {
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		$this->plugin_text_domain = $plugin_text_domain;
+    $this->plugin_name = NS\PLUGIN_NAME;
+    $this->version = NS\PLUGIN_VERSION;
+    $this->text_domain = NS\PLUGIN_TEXT_DOMAIN;
 
     $this->set_labels(array(
-      'authors'     => __('Authors', $this->plugin_text_domain),
-      'authorsAll'  => __('All authors', $this->plugin_text_domain),
-      'alt'         => __('No alt tag', $this->plugin_text_domain)
+      'authors'     => __('Authors', $this->text_domain),
+      'authorsAll'  => __('All authors', $this->text_domain),
+      'alt'         => __('No alt tag', $this->text_domain)
     ) );
 	}
 
 	/**
-   * Action admin_enqueue_scripts
+   * Action: admin_enqueue_scripts
 	 * Register the stylesheets for the admin area.
 	 *
 	 * @since       0.0.1
@@ -82,7 +103,7 @@ class Admin {
 	}
 
 	/**
-   * Action admin_enqueue_scripts
+   * Action: admin_enqueue_scripts
 	 * Register the JavaScript for the admin area.
 	 *
 	 * @since       0.0.1
@@ -103,9 +124,9 @@ class Admin {
       $this->plugin_name,
       'AltTagsCopy',
       array(
-        'txt'        => apply_filters( 'fu_alt_tag_txt', esc_html__( 'The following image(s) are missing alt text', $this->plugin_text_domain ) ),
-        'editTxt'    => apply_filters( 'fu_alt_tag_edittxt', esc_html__( 'You must enter alt text for the image', $this->plugin_text_domain ) ),
-        'disclaimer' => apply_filters( 'fu_alt_tag_disclaimer', esc_html__( 'Please include an ‘Alt Text’ before proceeding with inserting your image.', $this->plugin_text_domain ) ),
+        'txt'        => apply_filters( 'fu_alt_tag_txt', esc_html__( 'The following image(s) are missing alt text', $this->text_domain ) ),
+        'editTxt'    => apply_filters( 'fu_alt_tag_edittxt', esc_html__( 'You must enter alt text for the image', $this->text_domain ) ),
+        'disclaimer' => apply_filters( 'fu_alt_tag_disclaimer', esc_html__( 'Please include an ‘Alt Text’ before proceeding with inserting your image.', $this->text_domain ) ),
       )
     );
 	}
@@ -116,7 +137,7 @@ class Admin {
    * @since       0.0.1
    * @param       array $labels              Associative array of labels for localization
    */
-	private function set_labels($labels) {
+	protected function set_labels($labels) {
     if (!is_array($labels)) return;
     foreach ($labels as $key => $value) {
       $this->labels[$key] = $value;
@@ -129,7 +150,7 @@ class Admin {
    * @since       0.0.1
    * @return      array
    */
-	private function get_labels() {
+	protected function get_labels() {
 	  return apply_filters('fu_accessibility_get_labels', $this->labels);
   }
 
@@ -142,7 +163,7 @@ class Admin {
    * @param       bool  $passthrough          Whether to return the args to pass to another method or the users array
    * @return      array
    */
-  private function get_authors($args = array(), $passthrough = false) {
+  protected function get_authors($args = array(), $passthrough = false) {
     $args = array_merge(array(
       'who'     => 'authors',
       'orderby' => 'display_name'
@@ -158,7 +179,7 @@ class Admin {
   }
 
   /**
-   * Action restrict_manage_posts
+   * Action: restrict_manage_posts
    * Adds authors to the filter bar for posts, pages, and attachments list tables
    *
    * @since       0.0.1
@@ -184,7 +205,7 @@ class Admin {
   }
 
   /**
-   * Action restrict_manage_posts
+   * Action: restrict_manage_posts
    * Adds a checkbox to the attachments list table to show only attachments without an alt tag
    *
    * @since       0.0.1
@@ -210,7 +231,7 @@ class Admin {
    * @since       0.0.1
    * @return      array
    */
-  private function get_meta_query() {
+  protected function get_meta_query() {
     return apply_filters('fu_accessibility_meta_query', array(
       'relation' => 'OR',
       array(
@@ -226,7 +247,7 @@ class Admin {
   }
 
   /**
-   * Action pre_get_posts
+   * Action: pre_get_posts
    * Updates queries containing a no_alt property to filter out posts with an alt tag
    *
    * @since       0.0.1

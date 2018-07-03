@@ -37,11 +37,14 @@ class Queue {
    * @return array
    */
   protected function get_images() {
+    $limit = get_option( 'fu_azure_limit', 5000 );
+    if ($limit < 1) return array();
+
     $query_images_args = array(
       'post_type'      => 'attachment',
       'post_mime_type' => 'image',
       'post_status'    => 'inherit',
-      'posts_per_page' => get_option( 'fu_azure_limit', 5000 ),
+      'posts_per_page' => $limit,
       'orderby'        => 'modified',
       'fields'         => 'ids',
       'meta_query'     => array(
@@ -100,10 +103,10 @@ class Queue {
    * Get an image's post meta data.
    *
    * @param int $post_id ID of the image post.
-   * @return mixed Post meta field. False on failure.
+   * @return array Post meta field.
    */
   public static function get_image_meta( $post_id ) {
-    return wp_get_attachment_metadata( $post_id );
+    return wp_get_attachment_metadata( $post_id ) ?: array();
   }
 
   /**

@@ -29,9 +29,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 define( __NAMESPACE__ . '\NS', __NAMESPACE__ . '\\' );
 
-define( NS . 'PLUGIN_NAME', 'fu-accessibility' );
+define( NS . 'PLUGIN_NAME', 'fu_accessibility' );
 
-define( NS . 'PLUGIN_VERSION', '0.0.1' );
+define( NS . 'PLUGIN_VERSION', '0.1.0' );
 
 define( NS . 'PLUGIN_NAME_DIR', plugin_dir_path( __FILE__ ) );
 

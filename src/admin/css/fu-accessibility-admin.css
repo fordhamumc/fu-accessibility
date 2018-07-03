@@ -47,3 +47,30 @@
 .fu-needs-alt-text {
     border: 1px solid red;
 }
+
+
+/**
+ * Icons and Messages
+ */
+
+.fu-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: bottom;
+}
+
+.fu-icon-error {
+    fill: #ff0033;
+}
+
+.fu-icon-warning {
+    fill: #ff980f;
+}
+
+.fu-icon-success{
+    fill: #4BB543;
+}
+
+.fu-status {
+    display: inline;
+}

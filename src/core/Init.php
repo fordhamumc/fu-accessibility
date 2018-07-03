@@ -47,7 +47,7 @@ class Init {
 	 * @access   protected
 	 * @var      string    $version    The current version of the plugin.
 	 */
-	protected $plugin_text_domain;
+	protected $text_domain;
 
 	/**
 	 * Initialize and define the core functionality of the plugin.
@@ -57,7 +57,7 @@ class Init {
 		$this->plugin_name = NS\PLUGIN_NAME;
 		$this->version = NS\PLUGIN_VERSION;
     $this->plugin_basename = NS\PLUGIN_BASENAME;
-    $this->plugin_text_domain = NS\PLUGIN_TEXT_DOMAIN;
+    $this->text_domain = NS\PLUGIN_TEXT_DOMAIN;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -89,8 +89,7 @@ class Init {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Internationalization_I18n( $this->plugin_text_domain );
-
+		$plugin_i18n = new Internationalization_I18n( $this->text_domain );
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
@@ -103,21 +102,24 @@ class Init {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Admin\Admin( $this->get_plugin_name(), $this->get_version(), $this->get_plugin_text_domain() );
-    $settings = new Admin\Settings( $this->get_plugin_text_domain() );
+		$admin = Admin\Admin::instance();
+    $settings = Admin\Settings::instance();
+    $alt_list = Admin\Alt_List::instance();
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-    $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'update_attachments' );
-    $this->loader->add_filter( 'ajax_query_attachments_args', $plugin_admin, 'update_ajax_attachments' );
-    $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'add_author_filter' );
-    $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'add_alt_media_filter' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
+    $this->loader->add_action( 'pre_get_posts', $admin, 'update_attachments' );
+    $this->loader->add_filter( 'ajax_query_attachments_args', $admin, 'update_ajax_attachments' );
+    $this->loader->add_action( 'restrict_manage_posts', $admin, 'add_author_filter' );
+    $this->loader->add_action( 'restrict_manage_posts', $admin, 'add_alt_media_filter' );
 
     $this->loader->add_action( 'admin_menu', $settings, 'add_admin_menu' );
     $this->loader->add_action( 'admin_init', $settings, 'add_sections' );
     $this->loader->add_action( 'admin_init', $settings, 'add_fields' );
     $this->loader->add_action( 'admin_post_fu_accessibility_update', $settings, 'form_response');
     $this->loader->add_filter( 'removable_query_args', $settings, 'update_removable_query_args');
+
+    $this->loader->add_filter( 'pre_get_posts', $alt_list, 'pre_get_media_posts');
 	}
 
 	/**
@@ -160,8 +162,8 @@ class Init {
 	 * @since     0.0.1
 	 * @return    string    The text domain of the plugin.
 	 */
-	public function get_plugin_text_domain() {
-		return $this->plugin_text_domain;
+	public function get_text_domain() {
+		return $this->text_domain;
 	}
 
 }

@@ -27,11 +27,11 @@ class Internationalization_I18n {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.0.1
-	 * @param      string $plugin_text_domain       The text domain of this plugin.
+	 * @param      string $text_domain       The text domain of this plugin.
 	 */
-	public function __construct( $plugin_text_domain ) {
+	public function __construct( $text_domain ) {
 
-		$this->text_domain = $plugin_text_domain;
+		$this->text_domain = $text_domain;
 
 	}
 

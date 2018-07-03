@@ -2,48 +2,68 @@
 
 namespace FU_Accessibility\admin;
 
+use FU_Accessibility as NS;
+
 class Settings {
   /**
    * Singleton
    *
    * @since   0.1.0
    * @access   protected
-   * @var Queue|null
+   * @var Settings|null
    */
   protected static $instance = null;
 
   /**
+   * The ID of this plugin.
+   *
+   * @since    0.0.1
+   * @access   protected
+   * @var      string    $plugin_name    The ID of this plugin.
+   */
+  protected $plugin_name;
+
+  /**
    * Slug name to refer to the menu
    *
-   * @since   0.1.0
+   * @since    0.1.0
    * @access   protected
    * @var      string
    */
-  protected $menu_slug = 'fu_accessibility_settings';
+  protected $menu_slug;
 
   /**
    * Name of the form action
    *
-   * @since   0.1.0
+   * @since    0.1.0
    * @access   protected
    * @var      string
    */
-  protected $action = 'fu_accessibility_update';
+  protected $action;
 
   /**
    * The text domain of this plugin.
    *
-   * @since   0.1.0
+   * @since    0.1.0
    * @access   protected
    * @var      string
    */
-  protected $plugin_text_domain;
+  protected $text_domain;
+
+  /**
+   * The settings screen names
+   *
+   * @since    0.1.0
+   * @access   protected
+   * @var      Array
+   */
+  protected $screens;
 
   /**
    * Singleton
    *
-   * @since   0.1.0
-   * @return Queue|null
+   * @since    0.1.0
+   * @return   Settings|null
    */
   public static function instance() {
     if ( is_null( self::$instance ) ) {
@@ -57,35 +77,50 @@ class Settings {
    * Initialize the settings and set its properties.
    *
    * @since   0.1.0
-   * @param   string    $plugin_text_domain   The text domain of this plugin.
    */
-  public function __construct($plugin_text_domain) {
-    $this->plugin_text_domain = $plugin_text_domain;
+  public function __construct() {
+    $this->plugin_name = NS\PLUGIN_NAME;
+    $this->text_domain = NS\PLUGIN_TEXT_DOMAIN;
+    $this->menu_slug = $this->plugin_name . "_settings";
+    $this->action = $this->plugin_name . "_update";
   }
 
 
   /**
-   * Action admin_menu
+   * Action: admin_menu
    * Register the plugin settings page
    * 
    * @since   0.1.0
    */
   public function add_admin_menu() {
+    $alt_list = Alt_List::instance();
     add_menu_page(
-      __( 'Accessibility', $this->plugin_text_domain ),
-      __( 'Accessibility', $this->plugin_text_domain ),
+      __( 'Accessibility', $this->text_domain ),
+      __( 'Accessibility', $this->text_domain ),
       'manage_options',
       $this->menu_slug,
-      'theme_settings_page');
-
-    add_submenu_page(
-      $this->menu_slug,
-      __( 'Alt Tag Generator', $this->plugin_text_domain ),
-      __( 'Alt Tags', $this->plugin_text_domain ),
-      'manage_options',
-      $this->menu_slug,
-      array($this, 'add_options_wrapper')
+      'theme_settings_page'
     );
+
+    $this->screens['settings'] = add_submenu_page(
+      $this->menu_slug,
+      __( 'Accessibility Settings', $this->text_domain ),
+      __( 'Settings', $this->text_domain ),
+      'manage_options',
+      $this->menu_slug,
+      array($this, 'load_options_wrapper')
+    );
+
+    $this->screens['list'] = add_submenu_page(
+      $this->menu_slug,
+      __( 'Generated Alt Tags', $this->text_domain ),
+      __( 'Alt Tags', $this->text_domain ),
+      'edit_posts',
+      $this->plugin_name . '_list',
+      array($alt_list, 'load_alt_list_wrapper')
+    );
+
+    add_action( 'load-'.$this->screens['list'], array( $alt_list, 'load_alt_list_screen_options' ) );
   }
 
 
@@ -94,12 +129,12 @@ class Settings {
    *
    * @since   0.1.0
    */
-  public function add_options_wrapper() {
+  public function load_options_wrapper() {
     if (!current_user_can('manage_options'))  {
-      wp_die( __('You do not have sufficient privileges to access this page.', $this->plugin_text_domain) );
+      wp_die( __('You do not have sufficient privileges to access this page.', $this->text_domain) );
     } ?>
     <div class="wrap">
-      <h2><?php _e( 'Accessibility', $this->plugin_text_domain ); ?></h2>
+      <h2><?php _e( 'Accessibility', $this->text_domain ); ?></h2>
       <?php
       if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ){
         $this->admin_notice( (isset($_GET['fu-alt-generator'])) ? $_GET['fu-alt-generator'] : false );
@@ -130,21 +165,21 @@ class Settings {
   public function admin_notice($queued) {
     $class = 'notice-success';
     if ($queued === '0') {
-      $message = __("There were no images to add to the queue.", $this->plugin_text_domain);
+      $message = __("There were no images to add to the queue.", $this->text_domain);
       $class = 'notice-error';
     } else if ($queued) {
       $image_txt = ($queued === '1') ? "image" : "images";
-      $message = __('Successfully added', $this->plugin_text_domain) . " {$queued}  {$image_txt} " . __('to the queue!', $this->plugin_text_domain) .
-        " " . __('Images will be processed in the background. You can navigate away from this page.', $this->plugin_text_domain);
+      $message = __('Successfully added', $this->text_domain) . " {$queued}  {$image_txt} " . __('to the queue!', $this->text_domain) .
+        " " . __('Images will be processed in the background. You can navigate away from this page.', $this->text_domain);
     } else {
-      $message = __('Your settings have been updated!', $this->plugin_text_domain);
+      $message = __('Your settings have been updated!', $this->text_domain);
     }
     echo "<div class='notice {$class} is-dismissible'><p>{$message}</p></div>";
   }
 
 
   /**
-   * Action admin_init
+   * Action: admin_init
    * Add sections to the settings page
    *
    * @since   0.1.0
@@ -152,7 +187,7 @@ class Settings {
   public function add_sections() {
     add_settings_section(
       'fu_alt_generator',
-      __('Alt Tag Generator', $this->plugin_text_domain),
+      __('Alt Tag Generator', $this->text_domain),
       array( $this, 'section_callback' ),
       $this->menu_slug
     );
@@ -168,14 +203,14 @@ class Settings {
   public function section_callback( $args ) {
     switch( $args['id'] ){
       case 'fu_alt_generator':
-        esc_html_e('Uses Microsoft Azure Computer Vision API to generate alt tags.', $this->plugin_text_domain);
+        esc_html_e('Uses Microsoft Azure Computer Vision API to generate alt tags.', $this->text_domain);
         break;
     }
   }
 
 
   /**
-   * Action admin_init
+   * Action: admin_init
    * Add fields to the settings page
    *
    * @since   0.1.0
@@ -184,13 +219,13 @@ class Settings {
     $fields = array(
       array(
         'uid' => 'fu_azure_key',
-        'label' => __('Azure Computer Vision Key', $this->plugin_text_domain),
+        'label' => __('Azure Computer Vision Key', $this->text_domain),
         'section' => 'fu_alt_generator',
         'type' => 'text'
       ),
       array(
         'uid' => 'fu_azure_limit',
-        'label' => __('Transaction Limit', $this->plugin_text_domain),
+        'label' => __('Transaction Limit', $this->text_domain),
         'section' => 'fu_alt_generator',
         'type' => 'number',
         'supplemental' => 'Max number of images to process',
@@ -199,7 +234,7 @@ class Settings {
     );
 
     foreach( $fields as $field ) {
-      add_settings_field( $field['uid'], $field['label'], array( $this, 'field_callback' ), $this->menu_slug, $field['section'], $field );
+      add_settings_field( $field['uid'], $field['label'], array( $this, 'load_field' ), $this->menu_slug, $field['section'], $field );
       register_setting( $this->menu_slug, $field['uid'] );
     }
 
@@ -212,7 +247,7 @@ class Settings {
    * @since   0.1.0
    * @param   array    $args   The parameters of the add_fields method
    */
-  public function field_callback( $args ) {
+  public function load_field( $args ) {
     $args = array_merge( array(
       'default' => '',
       'placeholder' => '',
@@ -266,7 +301,7 @@ class Settings {
 
 
   /**
-   * Action admin_post_fu_accessibility_update
+   * Action: admin_post_fu_accessibility_update
    * Handle form response
    *
    * @since   0.1.0
@@ -283,10 +318,7 @@ class Settings {
       update_option( 'fu_azure_limit', $limit );
 
       if ( isset( $_POST['submit_run'] ) ) {
-        $count = 0;
-        if (!empty($key) && $limit > 0) {
-          $count = Queue::instance()->queue_images();
-        }
+        $count = Queue::instance()->queue_images();
         $goback = add_query_arg( 'fu-alt-generator', $count, $goback );
       }
       wp_redirect( $goback );
@@ -294,8 +326,8 @@ class Settings {
     }
     else {
       wp_die(
-        __( 'Invalid nonce specified', $this->plugin_text_domain ),
-        __( 'Error', $this->plugin_text_domain ),
+        __( 'Invalid nonce specified', $this->text_domain ),
+        __( 'Error', $this->text_domain ),
         array(
           'response' 	=> 403,
           'back_link' => $redirect
@@ -306,7 +338,18 @@ class Settings {
 
 
   /**
-   * Action removable_query_args
+   * Get the screen
+   *
+   * @since   0.1.0
+   * @return  array
+   */
+  public function get_screens() {
+    return $this->screens;
+  }
+
+
+  /**
+   * Action: removable_query_args
    * Update the list of single-use query variable names that can be removed from a URL.
    *
    * @since   0.1.0
